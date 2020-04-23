@@ -1,0 +1,4 @@
+name: 'hypertextes/deploy'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
