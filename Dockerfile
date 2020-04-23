@@ -1,5 +1,5 @@
 # Docker Image
-FROM debian:bulleyes-slim
+FROM debian:bullseye-slim
 
 # Github Action Metadata
 LABEL "com.github.actions.name"="hypertextes/deploy"
