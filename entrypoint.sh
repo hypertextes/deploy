@@ -3,7 +3,7 @@
 set -e
 set -o pipefail
 
-BRANCH="gh-pages"
+BRANCH="master"
 BUILD_DIR="."
 
 if [[ -n "$TOKEN" ]]; then
