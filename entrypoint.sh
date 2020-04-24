@@ -21,23 +21,18 @@ if [[ -z "$GITHUB_REPOSITORY" ]]; then
 fi
 
 main() {
-    ZOLA_VERSION=$(zola --version)
     REMOTE_REPO="https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
     REMOTE_BRANCH=$BRANCH
 
-    echo "Starting deploy:"
-    echo "  Zola: $ZOLA_VERSION"
+    echo "Zola: $(zola --version)"
+    echo "Sass: $(sass --version)"
+    echo "Building directory: $BUILD_DIR"
+    echo Building with flags: ${BUILD_FLAGS:+"$BUILD_FLAGS"}
 
-    # echo "Fetching themes"
-    # git config --global url."https://".insteadOf git://
-    # git config --global url."https://github.com/".insteadOf git@github.com:
-    # git submodule update --init --recursive
-
-    echo "Building $BUILD_DIR:"
     cd $BUILD_DIR
 
-    echo Building with flags: ${BUILD_FLAGS:+"$BUILD_FLAGS"}
     zola build ${BUILD_FLAGS:+"$BUILD_FLAGS"}
+    sass --style=compressed assets/scss/index.scss public/index.css
 
     echo "Pushing artifacts to ${GITHUB_REPOSITORY}:$REMOTE_BRANCH"
 
@@ -47,10 +42,10 @@ main() {
     git config user.email "github-actions-bot@users.noreply.github.com"
     git add .
 
-    git commit -m "Deploy ${GITHUB_REPOSITORY} to ${GITHUB_REPOSITORY}:$REMOTE_BRANCH"
+    git commit -m "${GITHUB_REPOSITORY} deployed to $REMOTE_BRANCH"
     git push --force "${REMOTE_REPO}" master:${REMOTE_BRANCH}
 
-    echo "Deploy complete"
+    echo "${GITHUB_REPOSITORY} deployed to $REMOTE_BRANCH"
 }
 
 main "$@"
