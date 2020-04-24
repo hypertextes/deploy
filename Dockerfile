@@ -1,5 +1,5 @@
 # Docker Image
-FROM debian:bullseye-slim
+FROM node:12.16.2-stretch-slim
 
 # Github Action Metadata
 LABEL "com.github.actions.name"="hypertextes/deploy"
@@ -16,6 +16,9 @@ RUN apt-get update && apt-get install -y wget git
 RUN wget -q -O - \
 "https://github.com/getzola/zola/releases/download/v0.10.1/zola-v0.10.1-x86_64-unknown-linux-gnu.tar.gz" \
 | tar xzf - -C /usr/local/bin
+
+# Install Sass
+RUN npm install -g sass
 
 COPY entrypoint.sh /entrypoint.sh
 
